@@ -43,15 +43,14 @@ The repository includes a GitHub Actions workflow that publishes the site automa
 
 If you later add a custom domain, configure it in GitHub Pages settings after the first deploy.
 
-## GitHub Pages setup
+## Update flow
 
-1. Put this folder in its own GitHub repo.
-2. Commit `index.html`, `style.css`, `app.js`, `data/projects.json`, `assets/`, and `notes/`.
-3. In GitHub, open `Settings -> Pages`.
-4. Choose the branch you want to publish from, usually `main`, and set the folder to `/ (root)`.
-5. Save and wait for the Pages URL to go live.
+1. Edit files locally.
+2. Commit the changes.
+3. Push to `main`.
+4. GitHub Actions rebuilds and republishes the site automatically.
 
-Because this is a static site, there is no build step. GitHub Pages can serve it directly.
+Because this is a static site, there is no build step beyond the GitHub Actions Pages deploy.
 
 ## Caption formula
 
