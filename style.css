@@ -73,6 +73,15 @@ h3,
   letter-spacing: -0.02em;
 }
 
+body,
+.shell,
+.hero,
+.section,
+.panel,
+.project-card {
+  min-width: 0;
+}
+
 .page-grid,
 .page-glow {
   position: fixed;
@@ -700,9 +709,29 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .hero-nav,
+  .footer-actions {
+    width: 100%;
+  }
+
+  .hero-nav a,
+  .button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 760px) {
+  body::before,
+  .page-grid,
+  .page-glow {
+    opacity: 0.08;
+  }
+
+  .page-glow {
+    filter: blur(70px);
+  }
+
   .shell {
     width: min(100% - 18px, 1320px);
     padding-top: 10px;
@@ -723,12 +752,35 @@ h1 {
     width: 100%;
   }
 
+  .hero-nav a {
+    text-align: center;
+  }
+
   h1 {
-    font-size: clamp(2.8rem, 16vw, 4rem);
+    font-size: clamp(2.6rem, 15vw, 3.5rem);
+    max-width: 100%;
+  }
+
+  .hero-title,
+  .lede,
+  .section-lead,
+  .project-story {
+    max-width: 100%;
+  }
+
+  .brand-lockup {
+    align-items: flex-start;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    flex: 0 0 auto;
   }
 
   .portrait {
-    width: min(100%, 320px);
+    width: min(100%, 280px);
   }
 
   .signal-row {
@@ -745,7 +797,19 @@ h1 {
     border-radius: 24px;
   }
 
+  .project-card--featured {
+    padding: 20px;
+  }
+
   .project-thumb-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-cover {
+    aspect-ratio: 4 / 3;
+  }
+
+  .caption-grid {
     grid-template-columns: 1fr;
   }
 }
