@@ -1,5 +1,8 @@
 async function loadData() {
   const response = await fetch("data/projects.json");
+  if (!response.ok) {
+    throw new Error(`Failed to load projects.json (${response.status})`);
+  }
   return response.json();
 }
 
@@ -32,8 +35,17 @@ function inferSkillTags(project) {
   if (name.includes("almanac")) {
     return ["Medical review", "Consistency checking", "Rewrite", "Outlier"];
   }
-  if (name.includes("screenshot captions")) {
-    return ["Captions", "Documentation", "Proof of work"];
+  if (name.includes("autoresearch")) {
+    return ["AI for science", "Research methods", "Provenance", "In progress"];
+  }
+  if (name.includes("genesis")) {
+    return ["Artificial life", "Simulation", "Null controls", "In progress"];
+  }
+  if (name.includes("reel logger")) {
+    return ["Agentic pipeline", "Automation", "Safety design", "Python"];
+  }
+  if (name.includes("ai evaluation")) {
+    return ["Agent evaluation", "Function calling", "Red-teaming", "Certificate"];
   }
   if (name.includes("outlier health work")) {
     return ["Health QA", "Review notes", "Proof of work"];
@@ -127,6 +139,7 @@ function renderProject(project, index) {
           <div class="caption-card">
             <div class="caption-label">${item.title}</div>
             <p>${item.caption}</p>
+            ${item.why_it_matters ? `<small><strong>Why it matters:</strong> ${item.why_it_matters}</small>` : ""}
           </div>
         `).join("")}
       </div>
@@ -156,16 +169,24 @@ function renderProject(project, index) {
 
 function renderProjects(projects) {
   const root = document.getElementById("projects");
-  const visibleProjects = projects
-    .filter((project) => !project.name.includes("Screenshot Captions"))
+  const visibleProjects = [...projects]
     .sort((a, b) => Number(b.name.includes("NeoResist-MD")) - Number(a.name.includes("NeoResist-MD")));
   root.innerHTML = visibleProjects.map((project, index) => renderProject(project, index)).join("");
 }
 
 (async function main() {
-  const data = await loadData();
-  renderSummary(data.summary);
-  renderHighlights(data.highlights);
-  renderProfileLinks(data.contact);
-  renderProjects(data.projects);
+  try {
+    const data = await loadData();
+    renderSummary(data.summary);
+    renderHighlights(data.highlights);
+    renderProfileLinks(data.contact);
+    renderProjects(data.projects);
+  } catch (error) {
+    // The static fallback in index.html stays in place if the data fails to load.
+    console.error("Could not load portfolio data:", error);
+    const root = document.getElementById("projects");
+    if (root) {
+      root.innerHTML = `<p class="prose">Project details could not be loaded. Please refresh, or email dar.adnan.54@gmail.com.</p>`;
+    }
+  }
 })();
