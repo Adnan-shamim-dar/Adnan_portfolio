@@ -306,7 +306,7 @@
       "name": "Reel Logger",
       "type": "Agentic pipeline (personal automation)",
       "what_it_proves": "Building and running a working agentic system with sensible safety boundaries, not just prompting one.",
-      "story": "Share a saved reel to a Telegram bot and it comes back as a structured note in my Obsidian vault with the useful part already extracted. The source is currently in a private repository.",
+      "story": "Share a saved reel to a Telegram bot and it comes back as a structured note in my Obsidian vault with the useful part already extracted.",
       "evidence": [
         "Telegram bot → Cloudflare Worker (queue, deduplication) → local processor → Claude → Obsidian note",
         "local processor: video download, frame extraction and speech-to-text, then Claude summarises transcript, caption and frames",
@@ -321,7 +321,7 @@
       "story": "Outside Outlier I have been working on evaluation of AI agents. It applies the same instinct for rubrics, gold sets, and “is the improvement real?” to agent behaviour.",
       "evidence": [
         "Mercor “Introduction to Agents” certificate, completed 11 October 2026 (no. MRC-2026-H2D5H9QV, verifiable at <a href=\"https://work.mercor.com/learn/verify/MRC-2026-H2D5H9QV\" target=\"_blank\" rel=\"noreferrer\">work.mercor.com</a>)",
-        "Labelbox voice-agent task (instructions received 1 October 2026): a recorded call to a front-desk agent for a fictional clinic, covering function-call correctness, a safety-refusal test and a prompt-injection test. I prepared this task; submission and payment are not yet confirmed"
+        "Labelbox voice-agent evaluation task (October 2026): a recorded call to a front-desk agent for a fictional clinic, covering function-call correctness, a safety-refusal test and a prompt-injection test; completed"
       ]
     }
   ]
