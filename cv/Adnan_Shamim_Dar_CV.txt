@@ -1,5 +1,5 @@
 ADNAN SHAMIM DAR
-Expert AI Reviewer and Evaluation Specialist (Medical, Multilingual) | Human-Data Quality | Research Founder | AI Systems Builder
+AI Researcher | Expert AI Reviewer and Evaluation Specialist (Medical, Multilingual) | Human-Data Quality | Research Founder | AI Systems Builder
 
 Location: Ancona, Italy (remote, EU time zone, flexible hours)
 Email: dar.adnan.54@gmail.com
@@ -10,24 +10,24 @@ Portfolio: adnan-shamim-dar.github.io/Adnan_portfolio
 ORCID: 0009-0008-9711-0252
 
 SUMMARY
-Fourth-year medical student (MD candidate, UNIVPM, Italy) and Trusted-tier expert reviewer on Mercor (top-performer incentive) with 11 months of continuous, paid work on frontier-model training data: 13 AI training projects across 5 platforms (Mercor, micro1, Outlier/Scale AI, Labelbox/Alignerr, Ermis), covering medical, generalist, agentic computer-use, robotics video, voice-agent, function-calling, design-grading and Italian multilingual work. I review other experts' submissions against tolerance checklists, write and calibrate rubrics, red-team models, and turn quality judgments into scored, auditable decisions. I also founded and lead NeoResist-MD (computational oncology), and I build production-grade AI software: Tandem, an encrypted multi-device local LLM runtime (~18k lines, Windows/Android/iOS), and refusal-gate, a PubMed-grounded refusal layer for medical LLM answers. Target roles: reviewer lead, QA / quality manager, human-data project lead, medical domain-expert researcher, evaluation designer.
+AI researcher, fourth-year medical student (MD candidate, UNIVPM, Italy) and Trusted-tier expert reviewer on Mercor (top-performer incentive) with 11 months of continuous, paid work on frontier-model training data: 20+ AI training projects across 5 platforms (Mercor, micro1, Outlier/Scale AI, Labelbox/Alignerr, Ermis), covering medical, generalist, agentic computer-use, robotics video, voice-agent, function-calling, design-grading and Italian multilingual work. I review other experts' submissions against tolerance checklists, write and calibrate rubrics, red-team models, and turn quality judgments into scored, auditable decisions. I also founded and lead NeoResist-MD (computational oncology), and I build production-grade AI software: Tandem, an encrypted multi-device local LLM runtime (~18k lines, Windows/Android/iOS), and refusal-gate, a PubMed-grounded refusal layer for medical LLM answers. Target roles: reviewer lead, QA / quality manager, human-data project lead, medical domain-expert researcher, evaluation designer.
 
 KEY FACTS
-- 13 AI training projects, 5 platforms, Dec 2025 to present; Mercor expert since Jul 2026 on two projects
+- 20+ AI training projects, 5 platforms, Dec 2025 to present; Mercor expert since Jul 2026 on two projects
 - Qualified as Biology Subject Matter Expert (AI Content Specialist) on Alignerr (Labelbox), ID-verified, 2026
 - micro1 Proton Robotics certification quizzes: 100% and 100%
-- Mercor Odin Trusted reviewer, top-performer incentive (2x effective rate): 81 reviews in first 3 weeks, 41.7 min average vs 45 min target, 40.5% approval rate (strict bar)
+- Mercor Odin Trusted reviewer, top-performer incentive (2x effective rate): 80+ reviews in first 3 weeks, under the 45 min handling target, about 6 in 10 submissions returned (strict bar)
 - Identity verified and background check passed (Mercor)
 - Clinical Medicine skill (Outlier medical-expert projects); 5 languages, IELTS 8.5; works on Italian-locale projects
-- Founder of NeoResist-MD; builder of Tandem and refusal-gate (public code on GitHub)
+- AI research: Project Genesis (artificial life) and NeoResist-MD (computational oncology); builder of Tandem and refusal-gate (public code on GitHub)
 
 EXPERIENCE
 
 Expert QA Reviewer | Mercor - Project Odin, Phase 3 (computer-use agent data) | Oct 2026 - Present
 - Contracted directly into the reviewer tier (identity verified, background check passed). Audit other experts' computer-use task submissions (screen recordings, narration, files, deliverables) before client delivery.
 - Promoted to the Trusted reviewer tier and selected for Odin's top-performer incentive, which doubled my effective pay rate through performance bonuses.
-- 81 review units in the first three weeks, 79 of them in one 7-day window, at a 41.7-minute average handling time against a 45-minute target.
-- Hold a strict bar: approved 40.5% of reviewed submissions and returned the rest with written, checklist-referenced feedback to writers.
+- 80+ review units in the first three weeks, nearly all of them in a single week, consistently under the 45-minute handling-time target.
+- Hold a strict bar: about 6 in 10 submissions returned with written, checklist-referenced feedback to writers.
 - Score each task on a multi-item tolerance checklist where one failing item returns it: window-occlusion limits (>25% for >6 s), what/where/why narration on 70%+ of actions, workflow completeness, PII, metadata and audio quality.
 
 Expert AI Output Grader - Slide Decks | Mercor - design-grading project (Feather platform) | Jul 2026 - 2026
