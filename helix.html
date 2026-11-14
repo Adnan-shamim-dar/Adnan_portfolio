@@ -4,146 +4,60 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Adnan Shamim Dar · The Strand</title>
-<meta name="description" content="Experimental 3D view of Adnan Shamim Dar's portfolio: every chapter rides on a rotating DNA helix." />
+<meta name="description" content="Adnan Shamim Dar's work, mapped onto a living DNA helix. Click any node to open its mind map." />
 <link rel="canonical" href="https://adnan-shamim-dar.github.io/Adnan_portfolio/helix.html" />
 <meta name="theme-color" content="#05070a" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="helix.css?v=1" />
+<link rel="stylesheet" href="helix.css?v=2" />
 </head>
 <body>
 
-<header class="topbar">
-  <a class="brand" href="index.html"><span class="dot"></span>Adnan Shamim Dar</a>
-  <span class="lab-tag">Experimental · 3D strand view</span>
-  <a class="classic" href="index.html">Classic view ↗</a>
-</header>
+<canvas id="back" aria-hidden="true"></canvas>
+<div id="nodes-back" class="nodes" aria-hidden="true"></div>
+<canvas id="front" aria-hidden="true"></canvas>
+<div id="nodes-front" class="nodes"></div>
 
-<div class="stage" aria-hidden="false">
-  <canvas id="strand" aria-hidden="true"></canvas>
-  <div class="helix" id="helix">
-
-    <article class="strand-card intro" data-label="Start">
-      <p class="chap">Sequence 01</p>
-      <h1>Adnan Shamim Dar</h1>
-      <p class="role">AI Researcher · Medical AI Evaluator</p>
-      <p class="big">I find what's wrong with AI before your users do. Then I build systems that don't make those mistakes.</p>
-      <p class="hint"><span class="mouse"></span>Scroll to travel the strand</p>
-    </article>
-
-    <article class="strand-card" data-label="Proof">
-      <p class="chap">Sequence 02 · Proof</p>
-      <h2>The numbers, before the story.</h2>
-      <ul class="stats">
-        <li><b>20+</b><span>AI training projects</span></li>
-        <li><b class="g">80+</b><span>expert reviews in 3 weeks</span></li>
-        <li><b>6 in 10</b><span>submissions I send back</span></li>
-        <li><b>27k+</b><span>research evaluations</span></li>
-      </ul>
-      <p class="small">Mercor · micro1 · Outlier (Scale AI) · Labelbox · Alignerr · Ermis</p>
-    </article>
-
-    <article class="strand-card" data-label="Mercor · Odin">
-      <p class="chap">Sequence 03 · Experience</p>
-      <h2>Mercor · Trusted QA Reviewer</h2>
-      <p class="meta">Project Odin · Oct 2026 – now</p>
-      <p>Other experts record computer-use agent tasks. I decide whether they ship. Hired straight in at reviewer level, ID- and background-checked, made the Trusted tier, and picked for the top-performer incentive.</p>
-      <ul class="chips"><li>80+ reviews in 3 weeks</li><li>&lt;45 min each</li><li>6 in 10 sent back</li></ul>
-    </article>
-
-    <article class="strand-card" data-label="Mercor · Feather">
-      <p class="chap">Sequence 04 · Experience</p>
-      <h2>Mercor · Expert Design Grader</h2>
-      <p class="meta">Feather · Jul 2026</p>
-      <p>I graded AI-generated decks for an enterprise client: six task types, a 1–7 scale, a 45-minute clock, and written evidence for every score. I also wrote my own 22,000-character grading manual so my verdicts held up under review.</p>
-    </article>
-
-    <article class="strand-card" data-label="micro1">
-      <p class="chap">Sequence 05 · Experience</p>
-      <h2>micro1 · Robotics data</h2>
-      <p class="meta">Titan Proton · Sep – Oct 2026</p>
-      <p>Robots learn from video, and someone has to say exactly when the motion stops being useful. I tagged task footage frame by frame for idle time, wasted motion and progress. <b>100% on both certification quizzes.</b></p>
-    </article>
-
-    <article class="strand-card" data-label="Labelbox">
-      <p class="chap">Sequence 06 · Experience</p>
-      <h2>Labelbox / Alignerr · Red-teamer</h2>
-      <p class="meta">AVA voice agent · Oct 2026</p>
-      <p>I called a clinic's AI receptionist and tried to break it: wrong tool calls, unsafe requests, attempts to leak its system prompt. I'm also qualified on Alignerr as a <b>Biology Subject Matter Expert</b>.</p>
-    </article>
-
-    <article class="strand-card" data-label="Outlier">
-      <p class="chap">Sequence 07 · Experience</p>
-      <h2>Outlier · Scale AI</h2>
-      <p class="meta">Medical expert &amp; multilingual · Dec 2025 – Nov 2026</p>
-      <p>I wrote clinical prompts with verifiable answers, built to make frontier models fail, then ranked what they said. I stress-tested long conversations, evaluated Italian, and reviewed other contributors' work on projects where access depends on your quality score.</p>
-      <ul class="chips"><li>White Coat</li><li>Almanac</li><li>Galaxy Speech</li><li>Aether</li><li>+ more</li></ul>
-    </article>
-
-    <article class="strand-card flag mint" data-label="Genesis">
-      <p class="chap">Sequence 08 · Flagship research</p>
-      <h2>Genesis</h2>
-      <p class="hook">What happens when you give an AI agent something to lose?</p>
-      <p>An artificial-life lab: single-cell agents that can actually die, and no fitness function. Whatever behaviour shows up has to emerge on its own. Run like a clinical trial, with ablations, null baselines and 455 automated tests.</p>
-      <ul class="chips"><li>Remove fear → ~⅓ fewer divisions</li><li>Own metric cut 88% after a null baseline</li></ul>
-    </article>
-
-    <article class="strand-card flag violet" data-label="NeoResist-MD">
-      <p class="chap">Sequence 09 · Flagship research</p>
-      <h2>NeoResist-MD</h2>
-      <p class="hook">Most cancer-AI papers overclaim. I built a research engine that can't.</p>
-      <p>It searches for better ways to rank neoantigens, the targets for personalised cancer vaccines. A machine-enforced gate decides which results can become a claim.</p>
-      <ul class="stats compact"><li><b>27k+</b><span>evaluations</span></li><li><b>9</b><span>cancer contexts</span></li><li><b class="v">0</b><span>unearned claims</span></li></ul>
-      <a class="link" href="https://github.com/Adnan-shamim-dar/neoresist-md" target="_blank" rel="noreferrer">GitHub ↗</a>
-    </article>
-
-    <article class="strand-card flag cyan" data-label="Tandem">
-      <p class="chap">Sequence 10 · Flagship build</p>
-      <h2>Tandem</h2>
-      <p class="hook">Your own private AI, on hardware you already own.</p>
-      <img src="assets/tandem/tandem-home.png" alt="Tandem control room" loading="lazy" />
-      <ul class="chips"><li>18k+ lines</li><li>Windows · Android · iOS</li><li>~50 tok/s on a laptop</li><li>AES-256 pairing</li></ul>
-    </article>
-
-    <article class="strand-card" data-label="Also built">
-      <p class="chap">Sequence 11 · Builds</p>
-      <h2>Also built</h2>
-      <ul class="list">
-        <li><b>refusal-gate</b> · makes any LLM refuse health questions that real PubMed papers don't back up</li>
-        <li><b>MedViva</b> · an AI oral examiner that interrupts you mid-answer, like real ones do</li>
-        <li><b>VivaMed Access</b> · multilingual low-data health explainers (hackathon)</li>
-        <li><b>CGM models · ECG denoising · AI in radiology</b></li>
-      </ul>
-    </article>
-
-    <article class="strand-card" data-label="Credentials">
-      <p class="chap">Sequence 12 · Credentials</p>
-      <h2>Medicine is the hardest domain to fake.</h2>
-      <ul class="list">
-        <li><b>MD candidate</b>, Università Politecnica delle Marche, year 4 of 6</li>
-        <li><b>IMAT 104th worldwide</b> · ERDIS fully funded merit scholarship</li>
-        <li>Mercor · Introduction to Agents · Alignerr Biology SME</li>
-        <li>English (IELTS 8.5) · Italian · Arabic · Hindi · Urdu</li>
-      </ul>
-    </article>
-
-    <article class="strand-card cta" data-label="Contact">
-      <p class="chap">Sequence 13 · End of strand</p>
-      <h2>If your model gives medical answers, I'm the person you want reading them first.</h2>
-      <div class="actions">
-        <a class="btn" href="mailto:dar.adnan.54@gmail.com">Email me</a>
-        <a class="btn ghost" href="cv/Adnan_Shamim_Dar_CV.pdf">Download CV</a>
-        <a class="btn ghost" href="index.html">Classic view</a>
-      </div>
-    </article>
-
+<aside class="panel">
+  <div class="hero" id="hero">
+    <p class="kick"><span class="dot"></span>The strand · experimental</p>
+    <h1>Adnan Shamim Dar</h1>
+    <p class="role">AI Researcher · Medical AI Evaluator</p>
+    <p class="tag">Every piece of my work, mapped onto one strand. Scroll to travel it. Click any node to open its map.</p>
   </div>
+
+  <nav class="groups" id="groups" aria-label="Sections"></nav>
+
+  <div class="panel-foot">
+    <a class="ghost" href="index.html">← Classic view</a>
+    <a class="solid" href="cv/Adnan_Shamim_Dar_CV.pdf">CV</a>
+  </div>
+</aside>
+
+<p class="scroll-hint" id="hint"><span class="mouse"></span>Scroll the strand · click a node</p>
+
+<!-- mind map -->
+<div class="mm" id="mm" role="dialog" aria-modal="true" aria-labelledby="mm-title" hidden>
+  <svg class="mm-lines" id="mm-lines" aria-hidden="true"></svg>
+  <div class="mm-center" id="mm-center">
+    <p class="mm-kicker" id="mm-kicker"></p>
+    <h2 id="mm-title"></h2>
+    <p class="mm-hook" id="mm-hook"></p>
+  </div>
+  <div class="mm-branches" id="mm-branches"></div>
+  <button class="mm-nav prev" id="mm-prev" aria-label="Previous node">←</button>
+  <button class="mm-nav next" id="mm-next" aria-label="Next node">→</button>
+  <button class="mm-close" id="mm-close" aria-label="Close map">Esc ×</button>
 </div>
 
-<nav class="rail" id="rail" aria-label="Chapters"></nav>
-<div class="scroll-space" id="space"></div>
+<div id="space" class="space"></div>
 
-<script src="helix.js?v=1" defer></script>
+<noscript>
+  <style>.panel{position:static}.space,canvas,.nodes,.scroll-hint{display:none}</style>
+  <p style="padding:24px">This view needs JavaScript. <a href="index.html">Open the classic portfolio</a>.</p>
+</noscript>
+
+<script src="helix.js?v=2" defer></script>
 </body>
 </html>
