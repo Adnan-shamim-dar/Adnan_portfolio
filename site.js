@@ -67,83 +67,111 @@
     return [W, H];
   };
 
-  /* ---------- neon DNA helix (left margin) ---------- */
+  /* ---------- immersive 3D neon DNA: you scroll through it ---------- */
   const dna = document.querySelector(".dna");
   if (dna) {
     const ctx = dna.getContext("2d");
     let [W, H] = fitCanvas(dna);
-    let lastScroll = window.scrollY, spin = 0, velocity = 0, last = 0;
-    // signal pulses travelling down the strands
-    const pulses = Array.from({ length: 3 }, (_, i) => ({ y: (i / 3) * H, strand: i % 2, speed: 0.6 + Math.random() * 0.5 }));
+    let t0 = performance.now(), last = 0, smoothScroll = window.scrollY;
 
-    const draw = (t) => {
-      ctx.clearRect(0, 0, W, H);
-      const cx = W / 2, A = Math.min(W * 0.3, 64), step = 16;
-      const k = (Math.PI * 2 * 2.2) / H;
-      const phase = spin + window.scrollY * 0.0026;
-      const at = (y, strand) => cx + (strand ? -1 : 1) * A * Math.sin(y * k + phase);
+    // one helix = axis position, radius, parallax, brightness
+    // B-DNA proportions: one full turn ~ 1.6x the helix diameter
+    const mk = (cx, R, gap, par, alpha, tilt, spin, far) =>
+      ({ cx, R, gap, par, alpha, tilt, spin, far, pitch: (2 * gap) / (1.6 * 2 * R) });
+    const helices = () => {
+      const small = W < 760;
+      return [
+        // distant helix: thin, slow, off to the right
+        mk(W * (small ? 0.88 : 0.86), Math.min(W * 0.07, 110), 16, 0.35, 0.38, 0.12, -0.0005, true),
+        // hero helix: huge, close to camera, sweeps across the page
+        mk(W * 0.5, Math.min(W * (small ? 0.38 : 0.26), 440), 22, 0.75, small ? 0.5 : 0.8, -0.2, 0.00035, false),
+      ];
+    };
 
-      const nodes = [];
-      let i = 0;
-      for (let y = -step; y <= H + step; y += step, i++) {
-        const th = y * k + phase, s = Math.sin(th), z = Math.cos(th);
-        const xa = cx + A * s, xb = cx - A * s, xm = (xa + xb) / 2;
-        // two-tone base pair: each half coloured by its strand; every 5th pair is a violet "marker"
-        const front = (z + 1) / 2, back = 1 - front;
-        const pairColor = i % 5 === 0 ? VIOLET : null;
-        ctx.lineWidth = 1.1;
-        ctx.strokeStyle = `rgba(${pairColor || MINT},${0.05 + 0.13 * front})`;
-        ctx.beginPath(); ctx.moveTo(xa, y); ctx.lineTo(xm, y); ctx.stroke();
-        ctx.strokeStyle = `rgba(${pairColor || CYAN},${0.05 + 0.13 * back})`;
-        ctx.beginPath(); ctx.moveTo(xm, y); ctx.lineTo(xb, y); ctx.stroke();
-        nodes.push([xa, y, z, MINT], [xb, y, -z, CYAN]);
+    const drawHelix = (h, time, scroll) => {
+      const D = h.R * 3.4;                       // camera distance from axis
+      const cy = H / 2, cosT = Math.cos(h.tilt), sinT = Math.sin(h.tilt);
+      const offset = (scroll * h.par) % (h.gap * 1000);
+      const first = Math.floor((offset - H * 0.9) / h.gap), lastI = Math.ceil((offset + H * 1.9) / h.gap);
+      const pts = [];
+      for (let i = first; i <= lastI; i++) {
+        const wy = i * h.gap - offset - H * 0.5;            // world y relative to screen centre
+        const th = i * h.pitch * Math.PI + time * h.spin;
+        for (let strand = 0; strand < 2; strand++) {
+          const a = th + strand * Math.PI;
+          const x = h.R * Math.cos(a), z = h.R * Math.sin(a);  // z > 0 toward camera
+          const p = D / (D - z);
+          let sx = x * (0.9 + 0.1 * p), sy = wy;          // depth drives size/glow, not shape
+          const rx = sx * cosT - sy * sinT, ry = sx * sinT + sy * cosT;  // tilt the whole helix
+          pts.push({ i, strand, x: h.cx + rx, y: cy + ry, z, p });
+        }
       }
-      // backbones: brighter where they face the viewer
+      // rungs (base pairs) first, faint
+      for (let k = 0; k + 1 < pts.length; k += 2) {
+        const A = pts[k], B = pts[k + 1];
+        if (A.y < -80 && B.y < -80 || A.y > H + 80 && B.y > H + 80) continue;
+        const depth = (Math.min(A.p, B.p) - 0.6) / 1.2;
+        const violet = ((A.i % 7) + 7) % 7 === 0;
+        const g = ctx.createLinearGradient(A.x, A.y, B.x, B.y);
+        const al = h.alpha * (0.10 + 0.24 * Math.max(0, depth));
+        g.addColorStop(0, `rgba(${violet ? VIOLET : MINT},${al})`);
+        g.addColorStop(1, `rgba(${violet ? VIOLET : CYAN},${al})`);
+        ctx.strokeStyle = g; ctx.lineWidth = Math.max(0.6, 1.2 * Math.min(A.p, B.p));
+        ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+      }
+      // backbones
       for (let strand = 0; strand < 2; strand++) {
-        for (let y = -step; y <= H + step; y += 6) {
-          const z = Math.cos(y * k + phase) * (strand ? -1 : 1);
-          ctx.strokeStyle = `rgba(${strand ? CYAN : MINT},${0.10 + 0.22 * (z + 1) / 2})`;
-          ctx.lineWidth = 1 + 0.6 * (z + 1) / 2;
-          ctx.beginPath(); ctx.moveTo(at(y, strand), y); ctx.lineTo(at(y + 6, strand), y + 6); ctx.stroke();
+        const s = pts.filter((q) => q.strand === strand);
+        for (let k = 0; k + 1 < s.length; k++) {
+          const A = s[k], B = s[k + 1];
+          const depth = Math.max(0, Math.min(1, (A.p - 0.6) / 1.1));
+          ctx.strokeStyle = `rgba(${strand ? CYAN : MINT},${h.alpha * (0.14 + 0.38 * depth)})`;
+          ctx.lineWidth = 1 + 2.2 * depth;
+          ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
         }
       }
+      // nucleotides, back to front; close ones become soft bokeh
       ctx.globalCompositeOperation = "lighter";
-      nodes.sort((a, b) => a[2] - b[2]);
-      for (const [x, y, z, c] of nodes) {
-        const d = (z + 1) / 2, r = 1.1 + 1.9 * d, a = 0.16 + 0.64 * d;
-        ctx.globalAlpha = a * 0.5;
-        const gs = r * 7; ctx.drawImage(glows[c], x - gs / 2, y - gs / 2, gs, gs);
-        ctx.globalAlpha = a; ctx.fillStyle = `rgb(${c})`;
-        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-      }
-      // travelling pulses
-      for (const p of pulses) {
-        const x = at(p.y, p.strand), c = p.strand ? CYAN : MINT;
-        for (let tail = 0; tail < 7; tail++) {
-          const ty = p.y - tail * 5, tx = at(ty, p.strand);
-          ctx.globalAlpha = 0.5 * (1 - tail / 7);
-          ctx.drawImage(glows[c], tx - 9, ty - 9, 18, 18);
+      pts.sort((a, b) => a.z - b.z);
+      for (const q of pts) {
+        if (q.y < -120 || q.y > H + 120) continue;
+        const c = q.strand ? CYAN : MINT;
+        const depth = Math.max(0, Math.min(1, (q.p - 0.6) / 1.1));
+        const r = (h.far ? 1.2 : 1.6) + (h.far ? 1.6 : 3.2) * depth;
+        if (!h.far && q.p > 1.3) {                         // out-of-focus foreground
+          const bs = r * 16;
+          ctx.globalAlpha = h.alpha * 0.10;
+          ctx.drawImage(glows[c], q.x - bs / 2, q.y - bs / 2, bs, bs);
+          continue;
         }
-        ctx.globalAlpha = 1; ctx.drawImage(glows[c], x - 14, p.y - 14, 28, 28);
+        const gs = r * 8;
+        ctx.globalAlpha = h.alpha * (0.12 + 0.35 * depth);
+        ctx.drawImage(glows[c], q.x - gs / 2, q.y - gs / 2, gs, gs);
+        ctx.globalAlpha = h.alpha * (0.25 + 0.6 * depth);
+        ctx.fillStyle = `rgb(${c})`;
+        ctx.beginPath(); ctx.arc(q.x, q.y, r * 0.7, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
     };
 
-    const tick = (t) => {
+    const render = (now) => {
+      ctx.clearRect(0, 0, W, H);
+      const time = reduce ? 0 : now - t0;
+      for (const h of helices()) drawHelix(h, time, smoothScroll);
+    };
+
+    const tick = (now) => {
       if (document.hidden) return;
-      if (t - last > 33) {
-        const dy = window.scrollY - lastScroll; lastScroll = window.scrollY;
-        velocity = velocity * 0.9 + dy * 0.0004;               // scroll gives the helix a little extra spin
-        spin += 0.009 + velocity;
-        for (const p of pulses) { p.y += p.speed * 3 + Math.abs(dy) * 0.2; if (p.y > H + 40) { p.y = -40; p.strand = Math.random() < 0.5 ? 0 : 1; } }
-        draw(t); last = t;
+      if (now - last > 33) {
+        smoothScroll += (window.scrollY - smoothScroll) * 0.18;   // eased, feels like gliding through it
+        render(now); last = now;
       }
       requestAnimationFrame(tick);
     };
 
-    draw(0);
-    window.addEventListener("resize", () => { [W, H] = fitCanvas(dna); draw(0); });
-    if (reduce) window.addEventListener("scroll", () => draw(0), { passive: true });
+    render(t0);
+    window.addEventListener("resize", () => { [W, H] = fitCanvas(dna); render(performance.now()); });
+    if (reduce) window.addEventListener("scroll", () => { smoothScroll = window.scrollY; render(0); }, { passive: true });
     else {
       requestAnimationFrame(tick);
       document.addEventListener("visibilitychange", () => { if (!document.hidden) requestAnimationFrame(tick); });
