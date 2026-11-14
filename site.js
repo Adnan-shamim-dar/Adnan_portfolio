@@ -82,7 +82,6 @@
       const small = W < 760;
       return [
         // distant helix: thin, slow, off to the right
-        mk(W * (small ? 0.88 : 0.86), Math.min(W * 0.07, 110), 16, 0.35, 0.38, 0.12, -0.0005, true),
         // hero helix: huge, close to camera, sweeps across the page
         mk(W * 0.5, Math.min(W * (small ? 0.38 : 0.26), 440), 22, 0.75, small ? 0.5 : 0.8, -0.2, 0.00035, false),
       ];
