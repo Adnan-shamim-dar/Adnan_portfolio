@@ -299,3 +299,32 @@ dialog#lightbox img { max-height: 88vh; width: auto; margin: 0 auto; }
   .hide-sm { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+/* ---------- view switcher (shared by both views) ---------- */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; }
+.view-switch {
+  position: fixed; top: 18px; right: 22px; z-index: 40; display: flex; gap: 2px; padding: 4px;
+  border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(8, 11, 15, 0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.view-switch a {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 9px;
+  font: 600 12px/1 "Inter", system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase;
+  color: #8a96a8; text-decoration: none; transition: color .2s, background .2s;
+}
+.view-switch a:hover { color: #e8edf4; }
+.view-switch a.on { color: #04110d; background: #4cf5c8; box-shadow: 0 0 18px rgba(76, 245, 200, 0.35); }
+.view-switch a:focus-visible { outline: 2px solid #4cf5c8; outline-offset: 2px; }
+.vs-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .8; }
+.view-switch a:not(.on) .vs-dot { background: #4cf5c8; box-shadow: 0 0 8px #4cf5c8; animation: vs-pulse 2s ease-in-out infinite; }
+@keyframes vs-pulse { 50% { opacity: .3; } }
+@media (max-width: 760px) { .view-switch { top: auto; bottom: 16px; right: 50%; transform: translateX(50%); } }
+
+.case-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: .92rem; font-weight: 600; color: var(--neon); border-bottom: 1px solid rgba(76, 245, 200, .3); padding-bottom: 2px; }
+.case-link:hover { color: var(--neon); border-color: var(--neon); }
+.case-link span { transition: transform .2s; }
+.case-link:hover span { transform: translateX(3px); }
+.flagship.neoresist .case-link { color: var(--violet); border-color: rgba(170, 140, 255, .35); }
+.flagship.tandem .case-link { color: var(--cyan); border-color: rgba(90, 190, 255, .35); }

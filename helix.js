@@ -488,7 +488,7 @@
         <a href="cv/Adnan_Shamim_Dar_CV.pdf">Download CV (PDF)</a>
         <a href="https://www.linkedin.com/in/adnan-shamim-dar-85664b230/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
         <a href="https://github.com/Adnan-shamim-dar" target="_blank" rel="noreferrer">GitHub ↗</a>
-        <a href="index.html">Classic portfolio</a></div>`;
+        <a href="classic.html">Classic portfolio</a></div>`;
     } else {
       text.innerHTML = `<h3>What I did</h3><ul class="cs-did">${n.did.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>`
         + (n.verify ? `<h3>Verify</h3><ul class="cs-verify">${n.verify.map((v) => v.href
