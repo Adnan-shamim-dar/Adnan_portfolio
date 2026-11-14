@@ -32,6 +32,7 @@
 </head>
 <body>
 <div class="spotlight" aria-hidden="true"></div>
+<canvas class="dna" aria-hidden="true"></canvas>
 <a class="skip" href="#content">Skip to content</a>
 
 <div class="layout">
@@ -328,6 +329,86 @@
     });
   });
   dlg.addEventListener("click", (e) => { if (e.target !== img) dlg.close(); });
+
+  /* ---- neon double helix ---- */
+  const cv = document.querySelector(".dna");
+  const ctx = cv && cv.getContext("2d");
+  if (ctx) {
+    const MINT = [76, 245, 200], CYAN = [90, 190, 255];
+    const sprite = (rgb) => {
+      const s = document.createElement("canvas"); s.width = s.height = 64;
+      const g = s.getContext("2d"), grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, `rgba(${rgb},1)`); grd.addColorStop(0.18, `rgba(${rgb},0.55)`); grd.addColorStop(1, `rgba(${rgb},0)`);
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64); return s;
+    };
+    const glow = [sprite(MINT.join(",")), sprite(CYAN.join(","))];
+    let W = 0, H = 0, dpr = 1, last = 0, running = true;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const draw = (t) => {
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, A = Math.min(W * 0.3, 70), step = 17;
+      const k = (Math.PI * 2 * 2.1) / H;                       // ~2 turns per screen
+      const phase = (reduce ? 0 : t * 0.00032) + window.scrollY * 0.0026;
+      const nodes = [];
+      for (let y = -step; y <= H + step; y += step) {
+        const th = y * k + phase, s = Math.sin(th), z = Math.cos(th);
+        const xa = cx + A * s, xb = cx - A * s;
+        // base-pair rung, brighter toward the front
+        const g = ctx.createLinearGradient(xa, y, xb, y);
+        const ra = 0.05 + 0.10 * (z + 1) / 2, rb = 0.05 + 0.10 * (1 - z) / 2;
+        g.addColorStop(0, `rgba(${MINT},${ra})`); g.addColorStop(1, `rgba(${CYAN},${rb})`);
+        ctx.strokeStyle = g; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(xa, y); ctx.lineTo(xb, y); ctx.stroke();
+        nodes.push([xa, y, z, 0], [xb, y, -z, 1]);
+      }
+      // backbones
+      for (let strand = 0; strand < 2; strand++) {
+        ctx.beginPath();
+        for (let y = -step; y <= H + step; y += 4) {
+          const th = y * k + phase, x = cx + (strand ? -1 : 1) * A * Math.sin(th);
+          y === -step ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(${strand ? CYAN : MINT},0.22)`; ctx.lineWidth = 1.2; ctx.stroke();
+      }
+      // nucleotides, back to front, additive glow
+      nodes.sort((a, b) => a[2] - b[2]);
+      ctx.globalCompositeOperation = "lighter";
+      for (const [x, y, z, c] of nodes) {
+        const d = (z + 1) / 2, r = 1.2 + 1.8 * d, a = 0.18 + 0.62 * d;
+        ctx.globalAlpha = a * 0.55;
+        const gs = r * 7; ctx.drawImage(glow[c], x - gs / 2, y - gs / 2, gs, gs);
+        ctx.globalAlpha = a;
+        ctx.fillStyle = `rgb(${c ? CYAN : MINT})`;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+    };
+
+    const loop = (t) => {
+      if (!running) return;
+      if (t - last > 33) { draw(t); last = t; }               // ~30 fps is plenty
+      requestAnimationFrame(loop);
+    };
+
+    resize(); draw(0);
+    window.addEventListener("resize", () => { resize(); draw(performance.now()); });
+    if (reduce) {
+      window.addEventListener("scroll", () => draw(0), { passive: true });
+    } else {
+      requestAnimationFrame(loop);
+      document.addEventListener("visibilitychange", () => {
+        running = !document.hidden;
+        if (running) requestAnimationFrame(loop);
+      });
+    }
+  }
 })();
 </script>
 </body>
